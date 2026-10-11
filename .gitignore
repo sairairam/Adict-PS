@@ -218,3 +218,13 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Next.js / Node
+node_modules/
+.next/
+next-env.d.ts
+
+# Secrets: never commit real keys (the example file is safe)
+.env*
+!.env.example
+*.tsbuildinfo
