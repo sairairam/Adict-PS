@@ -1,4 +1,5 @@
 import { Suspense } from "react";
+import { connection } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { signOut } from "../(auth)/login/actions";
 import { UploadDropzone } from "@/components/UploadDropzone";
@@ -21,6 +22,7 @@ export default function DocumentsPage() {
 }
 
 async function DocumentTable() {
+  await connection(); // per-request data (session, timestamps): never prerender
   const supabase = await createClient();
   const { data: documents } = await supabase
     .from("documents")
