@@ -1,4 +1,5 @@
 import { Suspense } from "react";
+import Link from "next/link";
 import { connection } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { signOut } from "../(auth)/login/actions";
@@ -37,7 +38,7 @@ async function DocumentTable() {
       <tbody>
         {documents?.map((d) => (
           <tr key={d.id} className="border-b">
-            <td className="py-2">{d.filename}</td>
+            <td className="py-2"><Link href={`/documents/${d.id}`} className="underline">{d.filename}</Link></td>
             <td>{d.status}</td>
             <td>{new Date(d.created_at).toLocaleString()}</td>
           </tr>

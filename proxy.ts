@@ -24,6 +24,9 @@ export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const isPublic = pathname.startsWith("/login");
 
+  if (!data.user && pathname.startsWith("/api/")) {
+    return NextResponse.json({ error: "Unauthorised" }, { status: 401 });
+  }
   if (!data.user && !isPublic) {
     const url = request.nextUrl.clone();
     url.pathname = "/login";
