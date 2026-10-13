@@ -11,6 +11,15 @@ describe("detectPii", () => {
     expect(found.map((m) => m.type)).toEqual(["email", "phone"]);
     expect(found[0].value).toBe("jane.doe@example.com");
   });
+  it("catches invalid-but-phone-shaped numbers such as 555 numbers", () => {
+    const found = detectPii("Contact: (555) 010-2486 | jordan@example.com", "US");
+    expect(found.map((m) => m.type)).toEqual(["phone", "email"]);
+    expect(found[0].value).toBe("(555) 010-2486");
+  });
+  it("does not treat ids, amounts or dates as phones", () => {
+    const text = "Claim CLM-2026-00421 policy AUTO-12345678 total $1,200.00 on 2026-10-05";
+    expect(detectPii(text, "US")).toEqual([]);
+  });
   it("ignores text without PII", () => {
     expect(detectPii("Invoice total 1,250.00 due 2026-01-31", "US")).toEqual([]);
   });
