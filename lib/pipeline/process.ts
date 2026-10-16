@@ -1,6 +1,7 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { createServiceClient } from "@/lib/supabase/server";
-import { GeminiReader, type DocumentReader } from "@/lib/extraction/gemini";
+import type { DocumentReader } from "@/lib/extraction/gemini";
+import { createReader } from "@/lib/extraction";
 import { tokeniseText, type PiiEntry } from "@/lib/pii/tokenise";
 import { storeEntries } from "@/lib/pii/vault";
 
@@ -17,7 +18,7 @@ async function setJob(admin: SupabaseClient, jobId: string, patch: Record<string
  * page text, field values and option values contain tokens, originals live only in the vault.
  * Re-running replaces earlier pages and fields, so a retry is safe.
  */
-export async function processJob(jobId: string, reader: DocumentReader = new GeminiReader()) {
+export async function processJob(jobId: string, reader: DocumentReader = createReader()) {
   const admin = createServiceClient();
 
   const { data: job } = await admin.from("processing_jobs").select("*").eq("id", jobId).single();
